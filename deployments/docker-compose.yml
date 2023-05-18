@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  redis:
+    container_name: ads-redis
+    image: redis:latest
+    command: /bin/sh -c "redis-server --requirepass ${REDIS_PASSWORD}"
+    ports:
+      - 6379:6379
+  backend:
+    build:
+      context: .
+    image: ads/ads-backend
+    container_name: "ads-backend"
+    command: "api"
+    ports:
+      - 8000:3000
+    restart: always
+    volumes:
+      - .env:/go/bin/.env
